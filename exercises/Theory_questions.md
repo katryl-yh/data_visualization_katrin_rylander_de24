@@ -221,3 +221,57 @@ Why it's better:
 - Works well with both text and shapes.
 
 - Handles coordinate transforms better than plt.arrow().
+
+# Exercise 1
+
+## Task 4. Theory questions
+
+---
+
+**a) Why is it good to use the proximity principle when designing visuals?**
+
+- The proximity principle comes from Gestalt psychology, and it says that elements that are close together are perceived as related.
+
+- In data visualization, using proximity helps people instantly understand relationships between items without needing extra explanations.
+
+- It reduces cognitive load because viewers can group related data points or labels easily and interpret the chart faster and more accurately.
+
+- In short: Proximity = Clear structure = Faster understanding.
+
+**b) What is clutter and why is it undesirable?**
+
+- Clutter is when there are too many visual elements (e.g., too many colors, lines, labels, decorations, or unrelated data) that distract the viewer from the main message.
+
+- Clutter makes visuals harder to read, slower to understand, and can confuse or overwhelm the audience.
+
+- In data visualization, the goal is clarity and focus. Clutter buries important insights under unnecessary noise.
+
+- Think of it like this: Clutter hides the story you want to tell.
+
+**c) Why should you spend time on data storytelling when there is a lot of things that needs to be explored and cleaned in the data?**
+
+- Even if data is messy, storytelling is what makes insights meaningful.
+
+- Data exploration and cleaning help prepare the data, but storytelling is what translates technical findings into understandable narratives for others.
+
+- Spending time on storytelling ensures that after all the hard work of cleaning, you don’t just throw facts at people, but you guide them to the important conclusions.
+
+- Without storytelling, even the cleanest, richest data can fail to engage or persuade your audience.
+
+
+**d) Data storytelling is very subjective in terms of which story to tell. How could you or your team craft a compelling story to tell?**
+
+- Start by knowing your audience: Understand what they care about or need to decide.
+
+- Explore the data carefully: Look for patterns, anomalies, trends that could be interesting or important.
+
+- Choose a clear angle: Pick one main insight or narrative rather than trying to cover everything at once.
+
+- Use structure: Frame your story with a beginning (context), middle (key findings), and end (implications or actions).
+
+- Make it visual and focused: Support your story with simple, clean visuals that highlight the main message.
+
+- Test it: Share the draft story with teammates for feedback — does it make sense, is it compelling, does it answer "so what?"
+
+### In short: 
+**Good storytelling = Audience-centered + Insight-driven + Visually clear + Actionable.**
