@@ -7,7 +7,8 @@ import plotly.express as px
 user_input = "Anna"
 result = "True"
 counter = 0
-
+pictures = ["fake_sad_rabbit.png", "fake_cat.png"]
+pic_pointer = 1
 
 
 def clear_results(state):
@@ -18,12 +19,16 @@ def is_palindrome(state):
     print(f"current input: {input_string}")
     print(f"before results is: {state.result}")
     if input_string == input_string[::-1]:
-        state.result = "True"
+        state.result = True
         state.counter +=1
+        state.pic_pointer = 1
+
     else:
         state.result = "False"
         state.counter -=1
+        state.pic_pointer = 0
     print(f"after results is {state.result}")
+    print(f"picture to show: {pictures[pic_pointer]}")
 
 
 with tgb.Page() as page:
@@ -44,7 +49,10 @@ with tgb.Page() as page:
 
     tgb.button(label = "CHECK", class_name="plain", on_action=is_palindrome)
 
-    tgb.text("The results is: {result}, current counter is: {counter} ")
+    #tgb.text("The results is: {result}")
+    tgb.text(f"Current result is: {counter}*⭐" )
+
+    tgb.image("assets/{pictures[pic_pointer]}")
 
 
 if __name__ == '__main__':
