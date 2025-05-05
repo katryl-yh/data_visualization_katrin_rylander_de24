@@ -275,3 +275,111 @@ Why it's better:
 
 ### In short: 
 **Good storytelling = Audience-centered + Insight-driven + Visually clear + Actionable.**
+
+
+# Exercise 2
+
+## Task 4. Theory questions
+
+---
+
+**a)  What is the difference between Plotly Graph Objects and Plotly Express?**
+
+#### Plotly Express → Quick and easy way to make charts.
+It’s like a “shortcut” — you just give it your data, and it figures out most of the layout and style for you.
+
+Example:
+```python
+import plotly.express as px
+df = px.data.iris()
+fig = px.scatter(
+    df, 
+    x='sepal_width', 
+    y='sepal_length', 
+    color='species')
+fig.show()
+```
+#### Plotly Graph Objects → More control and customization.
+You build the figure step by step: define traces (data series), layout, and then combine them.
+
+Example:
+```python
+import plotly.graph_objects as go
+fig = go.Figure()
+fig.add_trace(
+  go.Scatter(
+    x=[1, 2, 3], 
+    y=[4, 5, 6], 
+    mode='lines+markers'
+    )
+  )
+fig.update_layout(title='Simple Line Plot')
+fig.show()
+```
+
+##### Summary:
+
+- Use Plotly Express for fast plotting.
+
+- Use Graph Objects when you need more detailed control (like adding multiple layers, custom legends, etc.).
+
+---
+**b) How do you customize the hover in your visualizations?**
+
+One can change hover info (what shows up when you hover over points) using:
+
+- hover_data (Plotly Express)
+
+- hovertemplate or hoverinfo (Graph Objects)
+
+##### Example with Plotly Express:
+
+```python
+fig = px.scatter(
+  df, 
+  x='sepal_width', 
+  y='sepal_length', 
+  color='species',
+  hover_data=['petal_length', 'petal_width']
+  )
+fig.show()
+```
+
+##### Example with Graph Objects:
+
+```python
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=[1, 2, 3],
+    y=[4, 5, 6],
+    mode='markers',
+    hovertemplate='X: %{x}<br>Y: %{y}<extra></extra>'
+))
+fig.show()
+```
+---
+
+**c) When should you use Plotly vs Matplotlib?**
+
+##### Matplotlib:
+
+- Best for static plots (like in PDFs, reports, papers)
+
+- Good when you want simple, quick plots with full control over appearance
+
+- Not interactive
+
+##### Plotly:
+
+- Best for interactive plots (hovering, zooming, tooltips)
+
+- Great for dashboards, web apps, or sharing online
+
+- Easier to explore big or complex datasets interactively
+
+##### Example:
+
+- Report figure → Matplotlib
+
+- Interactive dashboard → Plotly
+
