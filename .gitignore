@@ -176,3 +176,4 @@ cython_debug/
 *.DS_Store
 
 interactive_figures
+settings.json
