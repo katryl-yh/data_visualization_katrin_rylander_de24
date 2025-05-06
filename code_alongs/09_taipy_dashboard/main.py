@@ -35,7 +35,7 @@ def filter_data(state):
 number_municipalities = 5
 selected_educational_area = "Data/IT"
 
-df_municipality = filter_df_municipality(df).head(number_municipalities)
+df_municipality = filter_df_municipality(df)
 
 municipality_chart = create_municipality_bar(
     df_municipality, xlabel="# ANSÖKTA UTBILDNINGAR", ylabel="KOMMUN"
