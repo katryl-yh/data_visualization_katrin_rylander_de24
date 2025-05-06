@@ -10,12 +10,16 @@ import numpy as np
 slider_num_dice = 5
 slider_num_throws = 101
 
-# Simulate dice throws
-df = pd.DataFrame(columns=[f"Die {i+1}" for i in range(slider_num_dice)])
-for throw in range(slider_num_throws):
-    df.loc[throw] = [random.randint(1, 6) for _ in range(slider_num_dice)]
+# Simulate df with dice throws
+def generate_df(num_dice = slider_num_dice, num_throws = slider_num_throws):
+    df = pd.DataFrame(columns=[f"Die {i+1}" for i in range(num_dice)])
+    for throw in range(num_throws):
+        df.loc[throw] = [random.randint(1, 6) for _ in range(num_dice)]
+    return df
 
-# Calculate values
+df = generate_df()
+
+# Calculate start values
 throw_means = df.mean(axis=1)
 theoretical_mean = 3.5
 calculated_mean = df.to_numpy().mean()
@@ -24,10 +28,8 @@ fig = px.histogram(throw_means, nbins=20, labels={'value': 'Mean per throw'}, ti
 
 
 def perform_simulation(state):
-    state.df = pd.DataFrame(columns=[f"Die {i+1}" for i in range(state.slider_num_dice)])
-    for throw in range(state.slider_num_throws):
-        state.df.loc[throw] = [random.randint(1, 6) for _ in range(state.slider_num_dice)]
-
+    df = generate_df(state.slider_num_dice, state.slider_num_throws)
+    
     state.throw_means = state.df.mean(axis=1)
     state.calculated_mean = state.df.to_numpy().mean()
     state.difference = np.abs(state.theoretical_mean - state.calculated_mean)
@@ -55,7 +57,7 @@ with tgb.Page() as page:
                     tgb.text("Calculated mean\n{calculated_mean:.2f}",rebuild=True)
                     tgb.text("Difference\n{difference:.2f}",rebuild=True)
                 """
-                tgb.chart(figure = "{fig}")
+                tgb.chart(figure = "{state.fig}")
                 tgb.text("The histogram have been calculated through taking mean values for each throw")
 
 
