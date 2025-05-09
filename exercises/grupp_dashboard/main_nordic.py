@@ -4,6 +4,9 @@ import pandas as pd
 import plotly.express as px
 from utils.constants import DATA_DIRECTORY
 
+# -----------------------------------------------------------------------
+# -----------------------------------------------------------------------
+
 # Load into DataFrame
 df = pd.read_csv(DATA_DIRECTORY / "nordic_company_rankings.csv")
 
@@ -26,58 +29,61 @@ df_new = df.drop(columns=['Headquarters', 'Rank'])
 # Rename columns
 df_new.rename(columns={'City': 'City Headquarters', 'Country': 'Country Headquarters'}, inplace=True)
 
+# -----------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 # sort per financial metric
 
-def select_from_df(df, type_of_industry = "Banking", financial_metric="Profits (billion $)"):
+def select_from_df(df, type_of_industry = "Banking", financial_metric = "Profits (billion $)"):
     # Select relevant columns
     df_selected = df.query("Industry == @type_of_industry")[["Company", financial_metric]]
 
     # Sort by financial metric in descending order
-    df_selected = df_selected.sort_values(by=financial_metric, ascending=True).reset_index(drop=True)
+    df_selected = df_selected.sort_values(by=financial_metric, ascending=False).reset_index(drop=True)
 
     return df_selected
 
 
 
 def filter_data(state):
-    try:
-        # Get full sorted df for max limit
-        full_df = select_from_df(state.df_new, state.selected_industry, state.selected_metric)
-        state.max_companies = len(full_df)
-        print(f"State max companies = {state.max_companies}")
-        # Apply filtering by number of companies
-        df_filtered = full_df.head(state.number_companies)
+    #try:
+    # Get full sorted df for max limit
+    full_df = select_from_df(df = state.df_new, type_of_industry = state.selected_industry, financial_metric = state.selected_metric)
+    state.max_companies = len(full_df)
+    print(f"State max companies = {state.max_companies}")
+    # Apply filtering by number of companies
+    df_filtered = full_df.head(state.number_companies)
 
-        state.bar_chart = px.bar(
-            df_filtered,
-            x=state.selected_metric,
-            y="Company",
-            title=f"{state.selected_metric.capitalize()} for companies in {state.selected_industry} industry",
-        )
-    except Exception as e:
-        print(f"Error updating chart: {e}")
-        state.bar_chart = None
+    state.bar_chart = px.bar(
+        df_filtered,
+        x=state.selected_metric,
+        y="Company",
+        title=f"{state.selected_metric.capitalize()} for companies in {state.selected_industry} industry",
+    )
+    
+    #except Exception as e:
+    #    print(f"Error updating chart: {e}")
+    #    state.bar_chart = None
 
 selected_metric = "Profits (billion $)"
 selected_industry = "Banking"
 
 number_companies = 1  # Starting value 
 #min_companies = 1 # Temporary value, will be updated dynamically
-max_companies = len(select_from_df(df_new, selected_industry, selected_metric)) 
+#max_companies = len(select_from_df(df_new, selected_industry, selected_metric)) 
 
-try:
-    df_filtered = select_from_df(df_new, selected_industry, selected_metric)
-    max_companies = len(df_filtered)
-    bar_chart = px.bar(
-        df_filtered,
-        x=selected_metric,
-        y="Company",
-        title=f"{selected_metric.capitalize()} for companies in {selected_industry} industry",
-    )
-except Exception as e:
-    print(f"Error creating initial chart: {e}")
-    bar_chart = None
+#try:
+df_filtered = select_from_df(df_new, selected_industry, selected_metric)
+max_companies = len(df_filtered)
+bar_chart = px.bar(
+    df_filtered,
+    x=selected_metric,
+    y="Company",
+    title=f"{selected_metric.capitalize()} for companies in {selected_industry} industry",
+)
+#except Exception as e:
+#    print(f"Error creating initial chart: {e}")
+#    bar_chart = None
 
 
 # --------------------------------------------------------------
@@ -126,7 +132,7 @@ with tgb.Page() as page:
 
         with tgb.part(class_name="card"):
             tgb.text("Raw data")
-            tgb.table("{df_filtered}")
+            tgb.table("{df_new}")
 
 
 # --------------------------------------------------------------
