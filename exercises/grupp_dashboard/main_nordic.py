@@ -29,29 +29,23 @@ df_new.rename(columns={'City': 'City Headquarters', 'Country': 'Country Headquar
 
 # sort per financial metric
 
-def select_from_df(df, type_of_industry = "Banking", financial_metric="Profits (billion $)", n=None):
+def select_from_df(df, type_of_industry = "Banking", financial_metric="Profits (billion $)"):
     # Select relevant columns
-    df_selected = df.query("Industry == @type_of_industry")[["Company", financial_metric]].reset_index()
+    df_selected = df.query("Industry == @type_of_industry")[["Company", financial_metric]]
 
     # Sort by financial metric in descending order
     df_selected = df_selected.sort_values(by=financial_metric, ascending=True).reset_index(drop=True)
 
-    if n:
-        df_selected = df_selected.head(n)
-
     return df_selected
 
 
+
 def filter_data(state):
-    #print(state.min_companies)
-    #print(state.max_companies)
-    #print(state.number_companies)
     try:
         # Get full sorted df for max limit
         full_df = select_from_df(state.df_new, state.selected_industry, state.selected_metric)
         state.max_companies = len(full_df)
-        state.min_companies = 1
-
+        print(f"State max companies = {state.max_companies}")
         # Apply filtering by number of companies
         df_filtered = full_df.head(state.number_companies)
 
@@ -68,15 +62,15 @@ def filter_data(state):
 selected_metric = "Profits (billion $)"
 selected_industry = "Banking"
 
-number_companies = 5  # Starting value 
-min_companies = 1 # Temporary value, will be updated dynamically
+number_companies = 1  # Starting value 
+#min_companies = 1 # Temporary value, will be updated dynamically
 max_companies = len(select_from_df(df_new, selected_industry, selected_metric)) 
 
 try:
-    df_to_plot = select_from_df(df_new, selected_industry, selected_metric)
-    max_companies = len(df_to_plot)
+    df_filtered = select_from_df(df_new, selected_industry, selected_metric)
+    max_companies = len(df_filtered)
     bar_chart = px.bar(
-        df_to_plot,
+        df_filtered,
         x=selected_metric,
         y="Company",
         title=f"{selected_metric.capitalize()} for companies in {selected_industry} industry",
@@ -121,8 +115,8 @@ with tgb.Page() as page:
                 )
 
                 tgb.slider(
-                    "{number_companies}",
-                    min="{min_companies}",
+                    value="{number_companies}",
+                    min=1,
                     max="{max_companies}",
                     continuous=False,
                 )
@@ -130,9 +124,9 @@ with tgb.Page() as page:
                 
                 tgb.button("FILTRER DATA", class_name="plain", on_action=filter_data)
 
-        #with tgb.part(class_name="card"):
-        #    tgb.text("Raw data")
-        #    tgb.table("{df}")
+        with tgb.part(class_name="card"):
+            tgb.text("Raw data")
+            tgb.table("{df_filtered}")
 
 
 # --------------------------------------------------------------
