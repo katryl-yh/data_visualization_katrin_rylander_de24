@@ -383,3 +383,117 @@ fig.show()
 
 - Interactive dashboard → Plotly
 
+# Exercise 3
+
+## Task 3. Theory questions
+
+---
+
+**a) What are some differences between streamlit and taipy?**
+
+#####  Streamlit and Taipy are both tools for building web apps using Python, but they have different focuses:
+
+- Streamlit is simpler and quicker for making dashboards and prototypes.
+
+- Taipy is more advanced, designed for full applications with features like pipelines, scenarios, and better control over user interaction and data flow.
+
+Example:
+
+- Use Streamlit if you want to build a quick dashboard from a DataFrame.
+
+- Use Taipy if you want to build a full app that runs a process (like a prediction model), tracks user input, and displays multiple outputs.
+
+---
+**b) What is the state variable used for?**
+
+The state variable in Taipy stores the current values of variables (like user input or data) and keeps track of changes. It helps the app know when to update the UI.
+
+##### Example:
+
+```python
+def on_button_click(state):
+    state.counter += 1
+```
+
+If you click a button, the counter will increase and the app will show the new value, thanks to the state.
+
+---
+**c) How do you style Taipy apps?**
+
+You can style Taipy apps using:
+
+- CSS (custom styles)
+
+- Taipy's style properties (like style="color:red;")
+
+- Themes (light/dark modes)
+
+---
+**d) What is a KPI?**
+
+KPI stands for Key Performance Indicator. It's a value that shows how well something is performing.
+
+Example:
+
+- In a sales dashboard, a KPI might be "Total Sales: $10,000"
+
+- In Taipy, you can show this using a gui.kpi component.
+
+---
+**e) How do you integrate Plotly graphs into Taipy?**
+
+You can create a Plotly chart and pass it to a Taipy gui.plotly component.
+
+##### Example:
+
+```python
+import taipy.gui.builder as tgb
+from taipy.gui import Gui
+import plotly.express as px
+
+# load data
+df_gapminder_Sweden = px.data.gapminder().query("country == 'Sweden'")
+
+# Create a Plotly figure
+bar_chart = px.line(
+    df_gapminder_Sweden,
+    x="year",
+    y="pop",
+    title="Population change",
+    labels={
+        "pop": "Population",
+    }
+)
+
+with tgb.Page() as page:
+    with tgb.part(class_name="card"):
+        tgb.text("Graph")
+        tgb.chart(figure="{bar_chart}")
+
+
+if __name__ == "__main__":
+    Gui(page).run(dark_mode=False, use_reloader=False, port=8080)
+```
+
+This shows a line chart inside your Taipy app.
+
+---
+**f) What is the difference between Python-syntax and Markdown syntax in Taipy?**
+
+Python syntax is used in your .py files, like normal Python code.
+
+##### Example:
+
+```python
+gui.Text("Hello from Python!")
+```
+
+Markdown syntax is used in .py or .md files to define layout using text formatting and embedded Taipy variables/components.
+
+```python
+# Hello from Markdown!
+<|Text|label=Welcome|>
+```
+
+You can mix both in a Taipy app depending on how you want to structure your code and layout.
+
