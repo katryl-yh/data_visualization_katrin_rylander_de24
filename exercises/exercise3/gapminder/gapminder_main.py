@@ -3,10 +3,12 @@ from taipy.gui import Gui
 import pandas as pd
 import plotly.express as px
 
-df = gapminder = px.data.gapminder()
-# group per continent and year
+# load data
+df_gapminder = px.data.gapminder()
+
+# group data per continent and year
 df_continent = (
-    gapminder.groupby(["year", "continent"])
+    df_gapminder.groupby(["year", "continent"])
     .agg({"pop": "sum", "lifeExp": "mean", "gdpPercap": "mean"})
     .reset_index().rename(columns={
         "pop": "Population",
@@ -15,6 +17,7 @@ df_continent = (
     })
 )
 
+# filter selected metric and year
 
 def filter_metric(df, metric, year):
     return df.query("year == @year")[["continent", metric]]
